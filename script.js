@@ -1,25 +1,23 @@
 // jQuery is the link that connects user interactions with HTML5 Canvas
-$("body").keydown(function(e) {
+$("#canvas-container").click(function() {
 	// spacebar to get custom message for recognized
-	if (e.keyCode == 32) {
-		$("#canvas-interface").css("opacity", "0");
-		setTimeout(function() {
-			$("#canvas-interface").css("opacity", "1");
-			$("#canvas-interface").html("Welcome back Casey! What about another selfie?");
-		}, 500);
-	}
+	// if (e.keyCode == 32) {
+	// 	$("#canvas-interface").css("opacity", "0");
+	// 	setTimeout(function() {
+	// 		$("#canvas-interface").css("opacity", "1");
+	// 		$("#canvas-interface").html("Welcome back Casey! What about another selfie?");
+	// 	}, 500);
+	// }
 
-	// down key to crush smiley face
-	if (e.keyCode == 40) {
+	// crush and uncrush smiley face
+	if (!crush) {
 		crush = true;
 		uncrush = false;
 		eyes.idleState = 0;
 		eyes.idleCounter = 0;
-		$("#cover").css("height", "100vh");
-	}
-
-	// up key to revive smiley face
-	if (e.keyCode == 38) {
+		$("#cover").css("height", canvas.height);
+		$("#cover").css("width", canvas.width);
+	} else if (crush) {
 		crush = false;
 		uncrush = true;
 		eyes.idleState = 0;
@@ -43,7 +41,7 @@ var ctx = canvas.getContext("2d");
 
 // canvas properties
 canvas.width = $("#canvas-container").width();
-canvas.height = window.innerHeight * 0.93;
+canvas.height = window.innerHeight;
 
 // mobile settings
 var deviceMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)
@@ -118,7 +116,7 @@ window.onkeyup = function(e) {
 // constructor
 function Eyes(x) {
 	this.x = x;
-	this.y = canvas.height/2 - canvas.height/8;
+	this.y = canvas.height/2 - canvas.width/8;
 	this.baseX = this.x;
 	this.baseY = this.y;
 	this.bounds = [[this.x - canvas.width/16, this.y - canvas.height/32], 
@@ -355,7 +353,7 @@ Eyes.prototype.render = function() {
 // mouth object
 function Mouth() {
 	this.x = canvas.width/2;
-	this.y = canvas.height/2 + canvas.height/8;
+	this.y = canvas.height/2 + canvas.width/8;
 	this.baseX = this.x;
 	this.baseY = this.y;
 	this.bounds = [[this.x - canvas.width/48, this.y - canvas.height/48], 
